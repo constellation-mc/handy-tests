@@ -3,7 +3,9 @@ plugins {
     id 'maven-publish'
 }
 
-version = project.mod_version
+def local = !System.getenv().containsKey("GITHUB_RUN_NUMBER")
+
+version = "${project.mod_version}-${project.minecraft_version}-${local ? 'local' : "build.${System.getenv("GITHUB_RUN_NUMBER")}"}"
 group = project.maven_group
 
 base {
@@ -25,7 +27,13 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation include(fabricApi.module("fabric-lifecycle-events-v1", project.fabric_version))
+    def fabricModules = [
+            "fabric-api-base",
+            "fabric-lifecycle-events-v1"
+    ]
+    fabricModules.each {
+        modImplementation include(fabricApi.module(it, project.fabric_version))
+    }
 }
 
 processResources {
