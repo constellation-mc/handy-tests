@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "handy-tests",
+  "version": "${version}",
+  "name": "handy-tests",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/constellation-mc/handy-tests"
+  },
+  "license": "MIT",
+  "icon": "assets/handy-tests/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.melontini.handytests.client.HandyClient"
+    ],
+    "server": [
+      "me.melontini.handytests.server.HandyServer"
+    ]
+  },
+  "mixins": [
+    "handy-tests.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": ">=${minecraft_version}"
+  }
+}

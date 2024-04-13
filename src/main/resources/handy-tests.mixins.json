@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.melontini.handytests.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ServerMainMixin"
+  ],
+  "client": [
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
