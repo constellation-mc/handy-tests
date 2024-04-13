@@ -29,13 +29,13 @@ public class MinecraftClientMixin {
                             new LevelInfo("handy_tests_world", GameMode.CREATIVE, false, Difficulty.EASY, true,
                                     new GameRules(), DataConfiguration.SAFE_MODE),
                             new GeneratorOptions(0, true, false),
-                            registryManager -> registryManager.get(RegistryKeys.WORLD_PRESET).entryOf(WorldPresets.FLAT).value().createDimensionsRegistryHolder());
+                            registryManager -> registryManager.get(RegistryKeys.WORLD_PRESET).entryOf(WorldPresets.FLAT).value().createDimensionsRegistryHolder(), null);
                 } else {
-                    client.createIntegratedServerLoader().start(new TitleScreen(), "handy_tests_world");
+                    client.createIntegratedServerLoader().start("handy_tests_world", () -> client.setScreen(new TitleScreen()));
                 }
             } catch (Throwable t) {
                 CrashReport report = CrashReport.create(t, "Setting tests world");
-                MinecraftClient.printCrashReport(report);
+                MinecraftClient.getInstance().printCrashReport(report);
             }
         });
     }
