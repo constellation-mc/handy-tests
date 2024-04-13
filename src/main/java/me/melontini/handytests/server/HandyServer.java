@@ -14,6 +14,10 @@ public class HandyServer implements DedicatedServerModInitializer {
 
     @Override
     public void onInitializeServer() {
+        if (System.getProperty("fabric-api.gametest") != null) {
+            LOGGER.info("Skipping handy server test, as gametest is enabled!");
+            return;
+        }
         MutableInt ticks = new MutableInt(0);
         ServerTickEvents.END_SERVER_TICK.register(server -> ticks.add(1));
 
