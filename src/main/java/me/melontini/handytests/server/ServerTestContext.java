@@ -1,6 +1,7 @@
 package me.melontini.handytests.server;
 
 
+import me.melontini.handytests.util.TestContext;
 import net.minecraft.server.MinecraftServer;
 
 import java.time.Duration;
@@ -11,19 +12,19 @@ import java.util.function.Function;
 import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 
-public record ServerTestContext(IntSupplier ticks, MinecraftServer server) {
+public record ServerTestContext(IntSupplier ticks, MinecraftServer server) implements TestContext<MinecraftServer> {
 
-    public void waitForOverworldTicks(int ticks) {
-        waitFor("Overworld load", client -> server.getOverworld() != null, Duration.ofMinutes(30));
-        final long startTicks = submitAndWait(client -> client.getOverworld().getTime());
-        waitFor("Overworld load", client -> Objects.requireNonNull(client.getOverworld()).getTime() > startTicks + ticks, Duration.ofMinutes(10));
+    public void sendCommand(String command) {
+        submitAndWait(server -> server.getCommandManager().executeWithPrefix(server.getCommandSource(), command));
     }
 
-    void waitFor(String what, Predicate<MinecraftServer> predicate) {
-        waitFor(what, predicate, Duration.ofSeconds(10));
+    public void waitForOverworldTicks(long ticks) {
+        waitFor("Overworld load", server -> server.getOverworld() != null, Duration.ofMinutes(30));
+        final long startTicks = submitAndWait(server -> server.getOverworld().getTime());
+        waitFor("Overworld load", server -> Objects.requireNonNull(server.getOverworld()).getTime() > startTicks + ticks, Duration.ofMinutes(10));
     }
 
-    void waitFor(String what, Predicate<MinecraftServer> predicate, Duration timeout) {
+    public void waitFor(String what, Predicate<MinecraftServer> predicate, Duration timeout) {
         final LocalDateTime end = LocalDateTime.now().plus(timeout);
 
         while (true) {
@@ -41,6 +42,15 @@ public record ServerTestContext(IntSupplier ticks, MinecraftServer server) {
         }
     }
 
+    public <T> T submitAndWait(Function<MinecraftServer, T> function) {
+        return submit(function).join();
+    }
+
+    @Override
+    public MinecraftServer context() {
+        return server();
+    }
+
     static void waitFor(Duration duration) {
         try {
             Thread.sleep(duration.toMillis());
@@ -51,9 +61,5 @@ public record ServerTestContext(IntSupplier ticks, MinecraftServer server) {
 
     <T> CompletableFuture<T> submit(Function<MinecraftServer, T> function) {
         return server.submit(() -> function.apply(server));
-    }
-
-    public <T> T submitAndWait(Function<MinecraftServer, T> function) {
-        return submit(function).join();
     }
 }
