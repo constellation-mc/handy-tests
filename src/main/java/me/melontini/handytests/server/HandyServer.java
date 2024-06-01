@@ -1,6 +1,7 @@
 package me.melontini.handytests.server;
 
 import com.mojang.logging.LogUtils;
+import me.melontini.handytests.util.Utils;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -14,10 +15,8 @@ public class HandyServer implements DedicatedServerModInitializer {
 
     @Override
     public void onInitializeServer() {
-        if (System.getProperty("fabric-api.gametest") != null) {
-            LOGGER.info("Skipping handy server test, as gametest is enabled!");
-            return;
-        }
+        if (!Utils.ENABLED) return;
+
         MutableInt ticks = new MutableInt(0);
         ServerTickEvents.END_SERVER_TICK.register(server -> ticks.add(1));
 
