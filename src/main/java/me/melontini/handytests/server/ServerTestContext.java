@@ -15,7 +15,10 @@ import java.util.function.Predicate;
 public record ServerTestContext(IntSupplier ticks, MinecraftServer server) implements TestContext<MinecraftServer> {
 
     public void sendCommand(String command) {
-        submitAndWait(server -> server.getCommandManager().executeWithPrefix(server.getCommandSource(), command));
+        submitAndWait(server -> {
+            server.getCommandManager().executeWithPrefix(server.getCommandSource(), command);
+            return null;
+        });
     }
 
     public void waitForOverworldTicks(long ticks) {
