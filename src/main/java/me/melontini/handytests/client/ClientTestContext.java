@@ -16,7 +16,7 @@ public record ClientTestContext(MinecraftClient client) implements TestContext<M
 
     public void sendCommand(String command) {
         FabricClientTestHelper.submitAndWait(client -> {
-            client.player.networkHandler.sendCommand(command);
+            client.player.sendCommand(command);
             return null;
         });
     }
