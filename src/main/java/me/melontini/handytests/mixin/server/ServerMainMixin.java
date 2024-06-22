@@ -1,6 +1,7 @@
-package me.melontini.handytests.mixin;
+package me.melontini.handytests.mixin.server;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import me.melontini.handytests.util.Utils;
 import net.minecraft.server.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,6 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ServerMainMixin {
     @ModifyExpressionValue(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/dedicated/EulaReader;isEulaAgreedTo()Z"))
     private static boolean isEulaAgreedTo(boolean original) {
-        return true;
+        return original || Utils.ENABLED;
     }
 }

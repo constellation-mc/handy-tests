@@ -36,6 +36,17 @@ dependencies {
     }
 }
 
+loom {
+    runs {
+        client {
+            property("handy-tests.auto-test", "true")
+        }
+        server {
+            property("handy-tests.auto-test", "true")
+        }
+    }
+}
+
 processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
