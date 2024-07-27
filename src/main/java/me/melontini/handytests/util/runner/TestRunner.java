@@ -25,6 +25,7 @@ public class TestRunner {
       method.setAccessible(true);
       tests.add(method);
     }
+    tests.sort(Comparator.comparing(Method::getName));
     tests.sort(
         Comparator.comparingInt(value -> value.getAnnotation(HandyTest.class).priority()));
 
@@ -37,7 +38,7 @@ public class TestRunner {
             "Completed {}#{} [{}/{}]...",
             entrypoint.getClass().getName(),
             test.getName(),
-            i,
+            i + 1,
             tests.size());
       } catch (IllegalAccessException | InvocationTargetException e) {
         throw new RuntimeException(
