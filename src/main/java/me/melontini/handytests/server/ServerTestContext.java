@@ -12,12 +12,11 @@ import net.minecraft.server.MinecraftServer;
 public record ServerTestContext(MinecraftServer server) implements TestContext<MinecraftServer> {
 
   public void sendCommand(String command) {
-    submitAndWait(
-        server -> {
-            server.getCommandManager().executeWithPrefix(server.getCommandSource(), command);
-            return null;
-        });
-    }
+    submitAndWait(server -> {
+      server.getCommandManager().executeWithPrefix(server.getCommandSource(), command);
+      return null;
+    });
+  }
 
   public void waitForOverworldTicks(long ticks) {
     waitFor("Overworld load", server -> server.getOverworld() != null, Duration.ofMinutes(30));

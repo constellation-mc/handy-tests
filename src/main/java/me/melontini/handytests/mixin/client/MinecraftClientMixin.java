@@ -65,9 +65,12 @@ public class MinecraftClientMixin {
                       .get(RegistryKeys.WORLD_PRESET)
                       .entryOf(WorldPresets.FLAT)
                       .value()
-                      .createDimensionsRegistryHolder(), null);
+                      .createDimensionsRegistryHolder(),
+                  null);
         } else {
-          client.createIntegratedServerLoader().start(levelName, () -> client.setScreen(new TitleScreen()));
+          client
+              .createIntegratedServerLoader()
+              .start(levelName, () -> client.setScreen(new TitleScreen()));
         }
       } catch (Throwable t) {
         CrashReport report = CrashReport.create(t, "Setting tests world");
