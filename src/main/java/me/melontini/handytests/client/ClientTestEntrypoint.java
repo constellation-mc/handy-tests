@@ -1,5 +1,7 @@
 package me.melontini.handytests.client;
 
 public interface ClientTestEntrypoint {
-    void onClientTest(ClientTestContext context);
+  default void onClientTest(ClientTestContext context) {
+    context.runAllForEntrypoint(this);
+  }
 }
