@@ -8,8 +8,13 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Main.class)
 public class ServerMainMixin {
-    @ModifyExpressionValue(method = "main", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/dedicated/EulaReader;isEulaAgreedTo()Z"))
-    private static boolean isEulaAgreedTo(boolean original) {
-        return original || Utils.ENABLED;
-    }
+  @ModifyExpressionValue(
+      method = "main",
+      at =
+          @At(
+              value = "INVOKE",
+              target = "Lnet/minecraft/server/dedicated/EulaReader;isEulaAgreedTo()Z"))
+  private static boolean isEulaAgreedTo(boolean original) {
+    return original || Utils.ENABLED;
+  }
 }
